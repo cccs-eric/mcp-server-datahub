@@ -148,6 +148,28 @@ Save standalone documents (insights, decisions, FAQs, notes) to DataHub's knowle
 
 ## Configuration
 
+### Authentication
+
+DataHub authentication can be provided in two ways:
+
+- **Default/server-level token**: set `DATAHUB_GMS_URL` and `DATAHUB_GMS_TOKEN`
+  in environment variables (or `~/.datahubenv`).
+- **Per-request token (HTTP transport)**: send a PAT in the `Authorization`
+  header. Preferred format: `Authorization: Bearer <your-datahub-token>`.
+
+When an `Authorization` header is present on HTTP requests, that PAT is used for
+that request. Otherwise, the server falls back to the default
+`DATAHUB_GMS_TOKEN` configuration.
+
+Example (HTTP transport):
+
+```bash
+curl -i http://localhost:8000/mcp \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-datahub-token>" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+```
+
 ### Environment Variables
 
 | Variable | Default | Description |

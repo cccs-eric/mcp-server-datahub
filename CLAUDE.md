@@ -67,6 +67,10 @@ Server requires DataHub authentication via:
 
 - Environment variables: `DATAHUB_GMS_URL`, `DATAHUB_GMS_TOKEN`
 - Or `~/.datahubenv` configuration file
+- Or per-request HTTP header: `Authorization: Bearer <DATAHUB_PAT>`
+
+When an HTTP `Authorization` header is present, that PAT is used for the
+current request. Otherwise, the server falls back to `DATAHUB_GMS_TOKEN`.
 
 ## Version Management
 

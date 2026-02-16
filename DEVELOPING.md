@@ -18,6 +18,18 @@ uv run fastmcp dev src/mcp_server_datahub/__main__.py --with-editable .
 
 In the inspector UI, add environment variables for `DATAHUB_GMS_URL` and `DATAHUB_GMS_TOKEN`, then click Connect.
 
+For HTTP transport, you can also pass a PAT per request via the `Authorization`
+header (recommended format: `Authorization: Bearer <your-datahub-token>`). When
+present, this header token is used for that request instead of the default
+`DATAHUB_GMS_TOKEN`.
+
+In MCP Inspector:
+
+1. Select **HTTP** transport.
+2. Open the **Headers** section.
+3. Add header `Authorization` with value `Bearer <your-datahub-token>`.
+4. Connect and invoke tools normally.
+
 > **Note:** Use `fastmcp dev` (not `mcp dev`), since this project uses the standalone FastMCP package.
 
 ### Run using an MCP client

@@ -10,7 +10,8 @@ from typing_extensions import Literal
 from mcp_server_datahub._telemetry import TelemetryMiddleware
 from mcp_server_datahub._version import __version__
 from mcp_server_datahub.document_tools_middleware import DocumentToolsMiddleware
-from mcp_server_datahub.mcp_server import mcp, register_all_tools, with_datahub_client
+from mcp_server_datahub.mcp_server import mcp, register_all_tools
+from mcp_server_datahub.request_auth_middleware import RequestAuthMiddleware
 from mcp_server_datahub.version_requirements import VersionFilterMiddleware
 
 logging.basicConfig(level=logging.INFO)
@@ -43,15 +44,15 @@ def main(transport: Literal["stdio", "sse", "http"], debug: bool) -> None:
     if debug:
         # logging.getLogger("datahub").setLevel(logging.DEBUG)
         mcp.add_middleware(LoggingMiddleware(include_payloads=True))
+    mcp.add_middleware(RequestAuthMiddleware(client))
     mcp.add_middleware(TelemetryMiddleware())
     mcp.add_middleware(VersionFilterMiddleware())
     mcp.add_middleware(DocumentToolsMiddleware())
 
-    with with_datahub_client(client):
-        if transport == "http":
-            mcp.run(transport=transport, show_banner=False, stateless_http=True)
-        else:
-            mcp.run(transport=transport, show_banner=False)
+    if transport == "http":
+        mcp.run(transport=transport, show_banner=False, stateless_http=True)
+    else:
+        mcp.run(transport=transport, show_banner=False)
 
 
 if __name__ == "__main__":

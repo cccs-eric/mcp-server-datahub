@@ -57,6 +57,14 @@ if using_oss:
     mcp_module.version_requirements = version_requirements  # type: ignore[attr-defined]
     sys.modules["datahub_integrations.mcp.version_requirements"] = version_requirements
 
+    # Import and expose request_auth_middleware
+    from mcp_server_datahub import request_auth_middleware
+
+    mcp_module.request_auth_middleware = request_auth_middleware  # type: ignore[attr-defined]
+    sys.modules["datahub_integrations.mcp.request_auth_middleware"] = (
+        request_auth_middleware
+    )
+
     # Create datahub_integrations.mcp.tools submodule
     tools_module = types.ModuleType("datahub_integrations.mcp.tools")
     sys.modules["datahub_integrations.mcp.tools"] = tools_module
